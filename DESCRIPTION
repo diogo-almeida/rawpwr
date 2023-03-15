@@ -13,3 +13,5 @@ RoxygenNote: 7.2.3
 Imports: 
     MASS,
     stats
+URL: https://github.com/diogo-almeida/rawpwr
+BugReports: https://github.com/diogo-almeida/rawpwr/issues
