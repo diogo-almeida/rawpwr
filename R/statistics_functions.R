@@ -152,8 +152,8 @@ test_2x2_paired_data <- function(sim_results, rename_cols = TRUE) {
   interaction <- t_test_paired_data(diff_diff)
   output <-  rbind(main1, main2, interaction)
   output <- adjust_p(output)
-  output <- cbind(output, rownames(output))
-  output
+  condition <- rownames(output)
+  data.frame(output, condition)
 }
 
 #' Calculates the type-S and type-M errors in a given power simulation.
