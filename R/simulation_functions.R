@@ -17,13 +17,12 @@
 #'
 #' @returns A function that closes over the effects sizes and can be
 #'   further parametrized by the user.
-#'
+#' @export
 simulate_data_from_es <- function(es, base_mu = 600) {
   function(rho, std_dev, nsubj) {
     condition_means <- as.vector(es + base_mu)
     list(rho, std_dev)
     cov_mat <- calc_cov_mat(rho, std_dev, ncond = length(es))  # one rho all conds
-    #cov_mat
     simulation <- MASS::mvrnorm(n = nsubj, mu = condition_means, Sigma = cov_mat,
                                 empirical = FALSE)
     colnames(simulation) <- paste0("C", seq(condition_means), "_", condition_means)
@@ -55,16 +54,13 @@ simulate_data_from_es <- function(es, base_mu = 600) {
 #'
 #' @returns A data.frame with all the summary information for each set of
 #'   parameters specified by the user.
-#'
+#' @export
 do_sim <- function(sim_params, sim_func, Nsim = 5000, alpha = 0.05){
   replicate(Nsim, do.call(sim_func, sim_params), simplify = FALSE) |>
     lapply(FUN = matcols2lists, group_by = 2) |>
     rapply(t_test_paired_data, how = "list") |>
     lapply(FUN = rbind_list) |>
     lapply(FUN = adjust_p) |>
-    #lapply(FUN = function(x){x[["p.adjust"]] <- stats::p.adjust(p = x$p.value,
-    #                                                            method = "holm")}) |>
-    #lapply(FUN = transform, p.adjust = stats::p.adjust(p = p.value, method = "holm")) |>
     organize_output() |>
     lapply(FUN = calc_error_design, alpha = alpha) |>
     rbind_list() |>
@@ -96,7 +92,7 @@ do_sim <- function(sim_params, sim_func, Nsim = 5000, alpha = 0.05){
 #'
 #' @returns A data.frame with all the summary information for each set of
 #'   parameters specified by the user.
-#'
+#' @export
 do_sim_2x2 <- function(sim_params, sim_func, Nsim = 5000, alpha = 0.05) {
   replicate(Nsim, do.call(sim_func, sim_params), simplify = FALSE) |>
     lapply(FUN = matcols2lists, group_by = 4) |>

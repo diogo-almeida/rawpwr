@@ -14,12 +14,6 @@
 #'  the input list.
 #'
 #' @seealso [rbind()], which this function wraps.
-#'
-#' @examples
-#' list(a = rnorm(10), b = rnorm(10)) |>
-#'   lapply(mean) |>
-#'   rbind_list()
-#' @export
 rbind_list <- function(input_list) {
   do.call(rbind, input_list)
 }
@@ -91,6 +85,7 @@ organize_output <- function(simdata_list) {
 #' @param sim_list The output of a power simulation.
 #'
 #' @returns A list with all the columns adequately labeled.
+#' @export
 combine_sims <- function(sim_list) {
   n_conds <- nrow(sim_list[[1]])
   n_sims <- length(sim_list)

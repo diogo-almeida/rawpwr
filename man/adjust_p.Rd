@@ -2,23 +2,23 @@
 % Please edit documentation in R/statistics_functions.R
 \name{adjust_p}
 \alias{adjust_p}
-\title{Adjust p-values stored in a data.frame using the Holm-Bonferroni correction}
+\title{Adjust p-values stored in a vector or matrix using the Holm-Bonferroni correction}
 \usage{
-adjust_p(df, p_col = "p.value", method = "holm")
+adjust_p(mat_with_p, method = "holm")
 }
 \arguments{
-\item{df}{A data.frame containing a column of p-values to be adjusted}
-
-\item{p_col}{A string defining the name of the column in the input data.frame
-that contains the p-values to be adjusted.}
+\item{mat_with_p}{A double. Vector or matrix containing a column of p-values to be
+adjusted.}
 
 \item{method}{A string defining the name of the p-value adjustment method to
 be used. Defautls to Holm's method.}
 }
 \value{
-A data.frame identical to the original, with an added column
+A matrix identical to the original, with an added column
   containing the adjusted p-values.
 }
 \description{
-Adjust p-values stored in a data.frame using the Holm-Bonferroni correction
+Adjust p-values stored in a vector or matrxi using the Holm-Bonferroni
+correction. The cell name containing the p.values needs to be named
+'p.value'.
 }

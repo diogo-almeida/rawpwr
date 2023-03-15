@@ -21,11 +21,6 @@ With the introduction of native pipes in base R, this functions allows one
 one to pipe a list that is being processed in a pipe context and pass it to
 rbind using to `do.call()`
 }
-\examples{
-list(a = rnorm(10), b = rnorm(10)) |>
-  lapply(mean) |>
-  rbind_list()
-}
 \seealso{
 [rbind()], which this function wraps.
 }

@@ -218,23 +218,41 @@ calc_error_design <- function(sim_results, alpha = .05, rename_cols = TRUE) {
   errors
 }
 
-#' Adjust p-values stored in a data.frame using the Holm-Bonferroni correction
+#' Adjust p-values stored in a vector or matrix using the Holm-Bonferroni correction
 #'
 #' @description
-#' Adjust p-values stored in a data.frame using the Holm-Bonferroni correction
+#' Adjust p-values stored in a vector or matrxi using the Holm-Bonferroni
+#' correction. The cell name containing the p.values needs to be named
+#' 'p.value'.
 #'
-#' @param df A data.frame containing a column of p-values to be adjusted
-#'
-#' @param p_col A string defining the name of the column in the input data.frame
-#'   that contains the p-values to be adjusted.
+#' @param mat_with_p A double. Vector or matrix containing a column of p-values to be
+#'   adjusted.
 #'
 #' @param method A string defining the name of the p-value adjustment method to
 #'   be used. Defautls to Holm's method.
 #'
-#' @returns A data.frame identical to the original, with an added column
+#' @returns A matrix identical to the original, with an added column
 #'   containing the adjusted p-values.
 #'
-adjust_p <- function(df, p_col = "p.value", method = "holm") {
-  df[["p.adjust"]] <- stats::p.adjust(p = df[[p_col]], method = method)
-  df
+adjust_p <- function(mat_with_p, method = "holm") {
+  if(!is.matrix(mat_with_p)) {
+    mat_with_p <- vec2onerow_mat(mat_with_p)
+  }
+  p.adjust <- stats::p.adjust(p = mat_with_p[, "p.value"], method = method)
+  cbind(mat_with_p, p.adjust)
+}
+
+#' Transforms a vector into a one row matrix.
+#'
+#' @description
+#' Transforms a vector into a matrix with one row. This is a hacky quickfix
+#' for when a function expects a matrix but instead gets a vector.
+#'
+#' @param vec A vector to be transformed into a one row matrix
+#'
+#' @returns A one row matrix with the contents of vec as columns.
+#'
+vec2onerow_mat <- function(vec) {
+  stopifnot(is.vector(vec))
+  matrix(vec, nrow = 1, dimnames = list(NULL, names(vec)))
 }
