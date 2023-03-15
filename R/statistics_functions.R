@@ -152,7 +152,7 @@ test_2x2_paired_data <- function(sim_results, rename_cols = TRUE) {
   interaction <- t_test_paired_data(diff_diff)
   output <-  rbind(main1, main2, interaction)
   output <- adjust_p(output)
-  output[["condition"]] <- rownames(output)
+  output <- cbind(output, rownames(output))
   output
 }
 
