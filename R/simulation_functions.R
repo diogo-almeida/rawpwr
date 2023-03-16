@@ -94,7 +94,7 @@ do_sim <- function(sim_params, sim_func, Nsim = 5000, alpha = 0.05){
 #'   parameters specified by the user.
 #' @export
 do_sim_2x2 <- function(sim_params, sim_func, Nsim = 5000, alpha = 0.05) {
-  replicate(Nsim, do.call(sim_func, sim_params), simplify = FALSE) |>
+  sim_results <- replicate(Nsim, do.call(sim_func, sim_params), simplify = FALSE) |>
     lapply(FUN = matcols2lists, group_by = 4) |>
     rapply(test_2x2_paired_data, how = "list" ) |>
     unlist(recursive = FALSE) |>

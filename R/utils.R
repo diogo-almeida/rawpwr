@@ -87,10 +87,30 @@ organize_output <- function(simdata_list) {
 #' @returns A list with all the columns adequately labeled.
 #' @export
 combine_sims <- function(sim_list) {
-  n_conds <- nrow(sim_list[[1]])
-  n_sims <- length(sim_list)
   sim_df <- rbind_list(sim_list)
-  sim_df[["simulation"]]  <- paste0("simulation_", rep(1:n_sims, each = n_conds))
-  sim_df[["condition"]] <- paste0("condition_", rep(1:n_conds, times = n_sims))
-  sim_df
+  extra_cols <- strsplit(rownames(sim_df), "\\.") |> rbind_list()
+  if (ncol(extra_cols) == 2) {
+    extra_df <- data.frame(simulation = paste0("sim_", extra_cols[, 1]),
+                           condition = extra_cols[, 2])
+  } else {
+    extra_df <- data.frame(simulation = paste0("sim_", extra_cols[, 1]))
+  }
+  data.frame(sim_df, extra_df)
+}
+
+#' Utility function to combine output of power simulations with the simulation
+#' parameters.
+#'
+#' @description
+#' This function takes a simulation list output and adds the simulation
+#' parameters and outputs a proper data.frame.
+#'
+#' @param sim_results A list. The output of a power simulation.
+#' @param sim_params A list. The parameters of a given a power simulation.
+#'
+#' @returns A data.frame with all the simulation parameters added to each
+#'   simulation result
+merge_with_sim_params <- function(sim_results, sim_params) {
+  mapply(function(params, sim_results) {data.frame(params, sim_results)},
+         sim_params, sim_results, SIMPLIFY = FALSE)
 }
